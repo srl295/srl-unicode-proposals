@@ -1,0 +1,32 @@
+\ProvidesPackage{uproposal}
+
+% was 12
+\usepackage{extsizes}                % need some bigger sizes
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[backend=bibtex,style=verbose-trad2]{biblatex}
+\usepackage{xecolor}
+\usepackage[mark]{gitinfo2}
+
+% simplify git mark
+\renewcommand{\gitMark}{\gitAbbrevHash}
+
+\bibliography{uproposal}
+
+
+% Will Robertson's fontspec.sty can be used to simplify font choices.
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+%\setromanfont[Renderer=ICU,Mapping=tex-text]{Gentium}
+%\usepackage{gentium}
+
+\setsansfont[Renderer=ICU,Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+\setmonofont[Renderer=ICU,Scale=MatchLowercase]{Source Code Pro}
+
+\endinput

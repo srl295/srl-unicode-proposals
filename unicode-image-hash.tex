@@ -1,0 +1,110 @@
+% !TEX TS-program = XeLaTeX
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+
+%!TEX encoding = UTF-8 Unicode
+% !BIB TS-program =
+
+\documentclass[12pt]{article}
+
+\usepackage{uproposal}
+
+
+\title{Image Hash, or, the last frontier of Emoji encoding}
+\author{Steven R. Loomis (individual contribution) \\
+		srl@icu-project.org \url{https://srl295.github.io}}
+
+\date{2016-04-29}                                           % Activate to display a given date or no date'
+
+
+
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+
+According to the Unicode Consortium's FAQ, 
+
+\begin{quote}
+Emoji are ``picture characters'' originally associated with cellular telephone usage in Japan, but now popular worldwide.
+\autocite{UnicodeFAQEmoji}
+\end{quote}
+
+The popularity of Emoji has been discussed elsewhere, but for the purposes of this document
+it is worth noting that over 735 code points have been designated Emoji\autocite[Section 3, ``Which Characters are Emoji'']{UTR51} with more in the pipeline.
+The stated longer-term goal for Unicode, however, is that implementations would support \textit{``embedded graphics, in addition to the emoji characters''}\autocite[Section 8, ``Longer Term Solutions'']{UTR51}.
+
+This document aims to present a proposed implementation of said stated goal, by
+a mechanism for encoding a unique embedded graphic identifier in plain text. If such a mechanism
+were widely adopted,  the need for additional code point allocation for Emoji should be obviated.
+
+\section{Non-Goals}
+\addcontentsline{toc}{section}{Non-Goals}
+
+UTR \# 51 outlines some possible use-case scenarios as well as challenges with embedded graphics \autocite[Section 8, ``Longer Term Solutions'']{UTR51}. It is not the goal of this document to
+address all aspects of embedded graphics. This document will focus on those aspects related to character
+encoding only, and leave to domain experts and implementers to determine standardized
+approaches to topics such as privacy and security, actual data transfer of the image content,
+reliability and availability, and the like.
+
+
+\section{Overview}
+\addcontentsline{toc}{section}{Overview}
+
+This document proposes:
+
+\begin{enumerate}
+
+\item The encoding of a new base character for image transfer, 
+  \texttt{ U+FFF8 EMBEDDED IMAGE BASE }
+  
+\item The allocation of the entire plane \texttt{ 0C } for the purpose of image hashes
+
+\end{enumerate}
+
+( TODO TODO )
+
+To generate a hash, the image content (a standardized size, 128x128 png),
+plus the metadata (content-type, alternates, etc) is SHA-256 hashed.
+
+The actual encoding is:
+
+
+\texttt { U+FFF8 + U+0Cxxxx + U+0Cxxxx + U+0Cxxxx ... }
+
+%U \+ FFF8  \+  U+0C____ \+ U \+ 0C____ \+ …
+
+where each \texttt{ U+0C } code point, from \texttt { U+0C0000 — U+0C7FFF } contains
+15 bits of the SHA-256 hash.
+
+The U+0C code points will have a combining character general category (which?).  
+
+The more  \texttt{ U+0C }  present (up to 20 - 300 bits ) the longer and more specific the hash is.
+
+( TODO TODO )
+
+
+% Probably not needed - small enough.
+%\clearpage
+%\tableofcontents
+%\printindex
+
+\clearpage
+\addcontentsline{toc}{chapter}{References}
+\printbibliography
+\section*{Colophon}
+
+Typeset by \LaTeX . Made with \( 100\%  \) recycled bits.
+All opinions belong to the authors and do not reflect the opinions
+of their associated employers.
+
+Thank you to Keith Winstein for the discussion which finally kicked off this document.
+
+
+
+\end{document}
