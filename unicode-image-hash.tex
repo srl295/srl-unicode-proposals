@@ -88,7 +88,7 @@ The first step to creating an implementation-defined emoji will be to
 represent the emoji in a canonical form. This format will need to be
 specified, but we do not do so here. As a straw-man, we suggest a JSON
 document with three keys: \texttt{content-type} (any IANA-registered MIME
-Media Type), \texttt{image} (a suggested rendering of the emoji,
+Media Type), \texttt{image} (a Base64-encoded suggested rendering of the emoji,
 interpreted as the format named in the \texttt{content-type} field), and
 \texttt{name} (name of the emoji, which may be used in fallback
 rendering for visually-impaired users). We call this representation
