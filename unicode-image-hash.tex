@@ -54,21 +54,11 @@ Unicode Standard as emoji.\footnote{\textit{E.g.,}
 these code points because Unicode plain text remains the dominant
 interoperable interchange format for messaging. In practice, before a
 new emoji can be used, a code point must be assigned and be recognized
-by the sender and receiver. However, a longer-term goal for Unicode is
+by the sender and receiver. The stated longer-term goal for Unicode is
 that implementations should support ``embedded graphics, in addition
 to the emoji characters''\autocite[Section 8, ``Longer Term
   Solutions'']{UTR51}.
-
-The demand for emoji characters has surged in the last few years as public has become enthralled by the multicolor glyphs that can appear in-line with text. Emoji have been the subject of an explosion of press pieces, numerous late-night television comedic segments, and even an upcoming movie from Sony Pictures Animation. Never has the encoding attracted such attention.
-As emoji use has proliferated, there have been increasing demands for better representation in the existing emoji set — ranging from hair variations (color and facial), to more female presence, to single-family households, to regional flags.\autocite{UTR52}
-
-However, the current emoji approval process takes upwards of 18 months, starting from when a proposal is first introduced, to when it moves out of the Unicode Emoji Subcommittee, to the Unicode Technical Committee, to ISO and back again for final approval. This current process, overseen by a relatively small organization whose stated main mission is focused on encoding existing languages, is widely understood as a bottleneck and also incredibly resource intensive on members’ time.
-
-To fill the demand for customizable glyphs, there has been an explosion of emoji-like images from a variety of vendors, ranging from personalized Bitmoji, to highly publicized “Kimoji”, to earnest refugee-themed emoji. These rogue “moji” are not technically emoji at all, but rather images or “stickers” that can be sent through messaging apps. In addition, vendors are using technical workarounds such as the Zero Width Joiner (ZWJ) and tagging to create emoji images that do not have to be assigned code points.
-
-Meanwhile, the variants of single emoji created by different vendors leads to confusion in the intent of the sender and recipient.\autocite{EmojiVarying} The inconsistent imagery is at tension with Unicode’s goal of having interoperable platform-neutral communication. 
-A longer term architectural solution is needed. 
-
+  
 In this proposal, we describe a mechanism to uniquely identify
 arbitrary images within a plain-text Unicode character sequence. This
 will allow implementers to create their own emoji without needing to
@@ -82,6 +72,19 @@ Our technique will gracefully degrade on legacy Unicode
 implementations, but our proposal is limited to allowing Unicode to
 \emph{uniquely identify} an arbitrary image. We propose to leave to
 implementers the details of how to retrieve the actual image.
+  
+  \subsection{Background} 
+
+The demand for emoji characters has surged in the last few years as public has become enthralled by the multicolor glyphs that can appear in-line with text. Emoji have been the subject of an explosion of press pieces, numerous late-night television comedic segments, and even an upcoming movie from Sony Pictures Animation. Never has the encoding attracted such attention.
+As emoji use has proliferated, there have been increasing demands for better representation in the existing emoji set — ranging from hair variations (color and facial), to more female presence, to single-family households, to regional flags.\autocite{UTR52}
+
+However, the current emoji approval process takes upwards of 18 months, starting from when a proposal is first introduced, to when it moves out of the Unicode Emoji Subcommittee, to the Unicode Technical Committee, to ISO and back again for final approval. This current process, overseen by a relatively small organization whose stated main mission is focused on encoding existing languages, is widely understood as a bottleneck and also incredibly resource intensive on members’ time.
+
+To fill the demand for customizable glyphs, there has been an explosion of emoji-like images from a variety of vendors, ranging from personalized Bitmoji, to highly publicized “Kimoji”, to earnest refugee-themed emoji. These rogue “moji” are not technically emoji at all, but rather images or “stickers” that can be sent through messaging apps. In addition, vendors are using technical workarounds such as the Zero Width Joiner (ZWJ) and tagging to create emoji images that do not have to be assigned code points.
+
+Meanwhile, the variants of single emoji created by different vendors leads to confusion in the intent of the sender and recipient.\autocite{EmojiVarying} The inconsistent imagery is at tension with Unicode’s goal of having interoperable platform-neutral communication. 
+A longer term architectural solution is needed. 
+
 
 \section{Proposal}
 
@@ -236,7 +239,7 @@ The resulting hash matches the first 80 bits of
 
 \section{Character Data}
 
-65,536 characters are to be encoded.
+This proposal requests a total of 65,536 new characters to be encoded.
 
 \subsection{Character Properties}
 
