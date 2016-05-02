@@ -1,13 +1,7 @@
-# Reading chai.txt
-U+2615
-U+D37D8
- hash bits: 37D8
-U+DC540
- hash bits: C540
-U+D3D29
- hash bits: 3D29
-U+DEC7D
- hash bits: EC7D
-U+D6F59
- hash bits: 6F59
+U+2615 (non-CHAI)
+U+D37D8 hash bits: 37D8
+U+DC540 hash bits: C540
+U+D3D29 hash bits: 3D29
+U+DEC7D hash bits: EC7D
+U+D6F59 hash bits: 6F59
 # CHAI Hash: 37D8C5403D29EC7D6F59

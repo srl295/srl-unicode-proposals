@@ -12,13 +12,13 @@ all:	$(HOOKS) $(PDFS)
 	echo all done
 
 
-samples: $(SAMPLE)
+# samples: $(SAMPLE)
 
-chai-encode.txt chai.json chai.txt: chai-encode.js chai.png
-	node chai-encode.js | tee chai-encode.txt
+# chai-encode.txt chai.json chai.txt: chai-encode.js chai.png
+# 	node chai-encode.js | tee chai-encode.txt
 
-chai-decode.txt: chai-decode.js chai.json chai.txt
-	node chai-decode.js | tee chai-decode.txt
+# chai-decode.txt: chai-decode.js chai.json chai.txt
+# 	node chai-decode.js | tee chai-decode.txt
 
 COMMON_FILES=$(COMMON).sty $(COMMON).bib
 

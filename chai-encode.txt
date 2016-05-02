@@ -1,10 +1,11 @@
-# Writing chai.json
-# SHA-256 hash: 37d8c5403d29ec7d6f59b02690414de77b0597735a953c2a00fbea50b5f79bb5
+# Read chai.png, wrote chai.json
+# SHA-256 hash: 
+ 37d8c5403d29ec7d6f59b02690414de77b0597735a953c2a00fbea50b5f79bb5
 # Going to use 5 CHAI chars or 80 bits.
+
 # <U+2615> (base)
 # <U+D37D8> IMAGE HASH 37D8
 # <U+DC540> IMAGE HASH C540
 # <U+D3D29> IMAGE HASH 3D29
 # <U+DEC7D> IMAGE HASH EC7D
 # <U+D6F59> IMAGE HASH 6F59
-# Writing chai.txt
