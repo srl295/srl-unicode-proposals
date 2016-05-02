@@ -9,7 +9,7 @@
 \usepackage{uproposal}
 
 
-\title{Coded Hashes of Arbitrary Images\\\normalsize \sf (or: the last frontier of Emoji encoding)}
+\title{Coded Hashes of Arbitrary Images\\\normalsize \sf (or: the last frontier of emoji encoding)}
 \author{
 Steven R.~Loomis\\
 \small srl@icu-project.org\\
@@ -59,7 +59,7 @@ to the emoji characters''\autocite[Section 8, ``Longer Term
 
 In this proposal, we describe a mechanism to uniquely identify
 arbitrary images within a plain-text Unicode character sequence. This
-will allow implementors to create their own emoji without needing to
+will allow implementers to create their own emoji without needing to
 request and wait for the assignment of a code point. The basic idea is
 to encode a globally-unique \emph{secure hash} of the emoji in a
 Unicode character sequence. Once the receiver knows the image's hash,
@@ -69,61 +69,134 @@ several mechanisms to retrieve it.
 Our technique will gracefully degrade on legacy Unicode
 implementations, but our proposal is limited to allowing Unicode to
 \emph{uniquely identify} an arbitrary image. We propose to leave to
-implementors the details of how to retrieve the actual image.
+implementers the details of how to retrieve the actual image.
 
 \section{Proposal}
 
-We propose that implementations be able to uniquely identify an
-arbitrary image within a Unicode character sequence. The means will be
-to encode, in a series of coded characters, a secure hash of a
-canonical representation of the image.
+\textbf{Outline}: implementations will be able to create
+``implementation-defined emoji,'' and allow their users to send them
+to receivers. The sender encodes a secure hash of the emoji (which
+serves as an unforgeable globally unique identifier) in a sequence of
+coded characters, which we call a Coded Hash of an Arbitrary Image
+(CHAI). Upon receiving the CHAI sequence, the receiving implementation
+may already know the corresponding image, or may have to request it
+either from the sender or from a third party.
 
+\subsection{Representing the emoji}
 
+The first step to creating an implementation-defined emoji will be to
+represent the emoji in a canonical form. This format will need to be
+specified, but we do not do so here. As a straw-man, we suggest a JSON
+document with three keys: \texttt{content-type} (any IANA-registered MIME
+Media Type), \texttt{image} (a suggested rendering of the emoji,
+interpreted as the format named in the \texttt{content-type} field), and
+\texttt{name} (name of the emoji, which may be used in fallback
+rendering for visually-impaired users). We call this representation
+the ``emoji description.''
 
-\section{Non-Goals}
-\addcontentsline{toc}{section}{Non-Goals}
+\subsection{Secure hash}
 
-UTR \# 51 outlines some possible use-case scenarios as well as challenges with embedded graphics \autocite[Section 8, ``Longer Term Solutions'']{UTR51}. It is not the goal of this document to
-address all aspects of embedded graphics. This document will focus on those aspects related to character
-encoding only, and leave to domain experts and implementers to determine standardized
-approaches to topics such as privacy and security, actual data transfer of the image content,
-reliability and availability, and the like.
+The implementation will identify the emoji by taking the SHA-256 hash
+of the emoji description. Given a secure hash value, it is intended to be
+intractable to find a different input that produces the same
+hash value. This is known as ``second-preimage resistance'';
+SHA-256 is believed to have strong second-preimage resistance.
 
+\subsection{Code points allocated to express the secure hash}
 
-\section{Overview}
-\addcontentsline{toc}{section}{Overview}
+We propose to allocate 65,536 ($2^{16}$) code points to represent bits
+of the secure hash. Each code point will express 16 bits of the secure
+hash. We envision allocating Plane 13, from U+D0000 through
+U+DFFFD. (The two code points at the end of the plane are
+noncharacters.) These 65,534 code points will represent the 16-bit
+values $\mathrm{0000}_{16}$ through $\mathrm{FFFD}_{16}$. In addition,
+we envision allocating U+EFFFC to represent the value
+$\mathrm{FFFE}_{16}$, and U+EFFFD to represent the value
+$\mathrm{FFFF}_{16}$. We refer to these 65,536 code points as ``CHAI
+characters.'' Each code point will have a combining-character general
+property. \textcolor{red}{\bf (which?)}
 
-This document proposes:
+In UTF-8, UTF-16, and UTF-32, every code point outside the BMP
+requires 32 bits to encode. As a result, the efficiency of
+this scheme will be 50\% in each Unicode encoding scheme (16 bits of
+the hash will consume 32 bits in memory, on disk, or on the wire).
 
-\begin{enumerate}
+\subsection{Encoding an implementation-defined emoji}
 
-\item The encoding of a new base character for image transfer, 
-  \texttt{ U+FFF8 EMBEDDED IMAGE BASE }
-  
-\item The allocation of the entire plane \texttt{ 0C } for the purpose of image hashes
+To code a CHAI, the sender first encodes a ``fallback'' base character
+that most closely approximates the implementation-defined emoji. This
+will allow rendering to degrade gracefully on receivers that do not
+support CHAIs.
 
-\end{enumerate}
+Next, the sender encodes the secure hash by appending between between
+one and sixteen CHAI characters. This will represent a prefix of the
+SHA-256 hash of the emoji description. The sender chooses how many
+bits of the hash to include. (We expect 80 bits, or five CHAI
+characters, to be sufficient for typical use today. The risk of
+including too few bits is that the hash may no longer be globally unique,
+especially in the presence of an attacker who wishes to create a different
+image with the same hash prefix.)
 
-( TODO TODO )
+Therefore, the actual encoding is:
 
-To generate a hash, the image content (a standardized size, 128x128 png),
-plus the metadata (content-type, alternates, etc) is SHA-256 hashed.
+\texttt { <\textit{basechar}> + <\textit{CHAI char}> + <\textit{CHAI char}> + <\textit{CHAI char}> \ldots }
 
-The actual encoding is:
+where the \textit{basechar} represents a fallback base character, and
+each CHAI character (from the range U+D0000 .. U+DFFFD and U+EFFFC
+.. U+EFFFD) represents 16 bits of the secure hash of the emoji
+description. The more CHAI characters given, the more specific the hash
+is and the less of a risk that an incorrect emoji might be displayed.
 
+\subsection{Receiving and rendering a CHAI}
 
-\texttt { U+FFF8 + U+0Cxxxx + U+0Cxxxx + U+0Cxxxx ... }
+On receipt, the receiver determines if it already knows of an emoji
+whose hash matches the prefix encoded in the CHAI characters. If so,
+it displays the emoji (either using the image provided in the emoji
+description, or an image known locally). Otherwise, the receiver
+displays the base character while it attempts to retrieve an emoji
+description whose hash matches the encoded hash prefix.
 
-%U \+ FFF8  \+  U+0C____ \+ U \+ 0C____ \+ …
+We do not specify how this retrieval will take place; we expect it to
+vary based on the messaging protocol. In some protocols, it might be
+easiest for the receiver to simply ask the sender to send the full
+emoji description. In others, the receiver might consult an online
+repository run by the implementing vendor. Alternately, the receiver
+might consult a community repository where anybody can contribute any
+emoji description.
 
-where each \texttt{ U+0C } code point, from \texttt { U+0C0000 — U+0C7FFF } contains
-15 bits of the SHA-256 hash.
+Because the CHAI serves as an unforgeable globally unique identifier
+for the emoji description, the receiver is intended to have confidence
+that if it finds a matching emoji description from anywhere, it can
+display it per the sender's intent.
 
-The U+0C code points will have a combining character general category (which?).  
+Depending on the protocol, as the input arrives, the receiver may have
+some ambiguity about when the sequence of CHAI characters ends.  A
+receiver may choose to wait until the next non-combining character
+(signaling the end of the combining character sequence), or a
+protocol-defined end-of-message signal, before retrieving the emoji
+description.
 
-The more  \texttt{ U+0C }  present (up to 20 - 300 bits ) the longer and more specific the hash is.
+\subsection{Privacy}
 
-( TODO TODO )
+As Unicode Technical Report \#51 notes: ``There are also privacy
+aspects to implementations of embedded graphics: if the graphic itself
+is not packaged with the text, but instead is just a reference to an
+image on a server, then that server could track usage.''
+
+We agree. A similar exposure could occur if the protocol provides
+for the receiver to ask the sender to send an unknown emoji description;
+this could unwittingly expose if anybody \emph{else} has ever sent the same
+emoji to the receiver.
+
+It is not the goal of this document to address all aspects of embedded
+graphics, and we intend to leave to domain experts and implementers
+the decision on how to handle these questions. For example, a client
+might behave similarly to current practice in retrieving external
+images in email. If the receiver already knows of the identified
+emoji, it can display it, but otherwise the receiver would display the
+fallback (base) character and ask the user to push a button before
+retrieving the emoji description.
+
 
 
 % Probably not needed - small enough.
@@ -131,7 +204,7 @@ The more  \texttt{ U+0C }  present (up to 20 - 300 bits ) the longer and more sp
 %\tableofcontents
 %\printindex
 
-\clearpage
+%\clearpage
 \addcontentsline{toc}{chapter}{References}
 \printbibliography
 \section*{Colophon}
@@ -139,9 +212,5 @@ The more  \texttt{ U+0C }  present (up to 20 - 300 bits ) the longer and more sp
 Typeset by \LaTeX . Made with \( 100\%  \) recycled bits.
 All opinions belong to the authors and do not reflect the opinions
 of their associated employers.
-
-Thank you to Keith Winstein for the discussion which finally kicked off this document.
-
-
 
 \end{document}
