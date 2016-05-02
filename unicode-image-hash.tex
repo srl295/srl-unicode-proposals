@@ -195,11 +195,47 @@ emoji, it can display it, but otherwise the receiver would display the
 fallback (base) character and ask the user to push a button before
 retrieving the emoji description.
 
-\subsection{Character Data}
+\section{Sample Code}
+
+Sample code here is for use with Node.js version 6.0.0
+
+\subsubsection{chai-encode.js}
+
+\lstinputlisting[language=Java,frame=single,basicstyle=\small]{chai-encode.js}
+
+Sample run
+\lstinputlisting[language=,frame=single,basicstyle=\small]{chai-encode.txt}
+
+
+\subsection{chai.json}
+
+Example Canonical Emoji Description (output of \texttt{chai-encode.js})
+
+\lstinputlisting[breaklines,basicstyle=\tiny\ttfamily,columns=fullflexible]{chai.json}
+
+\subsection{chai.png}
+
+Sample PNG
+
+\includegraphics{chai.png}
+
+\subsection{chai-decode.js}
+
+\lstinputlisting[language=Java,frame=single,basicstyle=\small]{chai-decode.js}
+
+Sample run
+\lstinputlisting[language=,frame=single,basicstyle=\small]{chai-decode.txt}
+
+
+The resulting hash matches the first 80 bits of 
+
+\small{\texttt{37d8c5403d29ec7d6f59b02690414de77b0597735a953c2a00fbea50b5f79bb5}}
+
+\section{Character Data}
 
 65,536 characters are to be encoded.
 
-\subsubsection{Character Properties}
+\subsection{Character Properties}
 
 \begin{verbatim}
 D0000;IMAGE HASH 0000;Cf;0;BN;;;;;N;;;;;
@@ -209,7 +245,7 @@ EFFFC;IMAGE HASH FFFE;Cf;0;BN;;;;;N;;;;;
 EFFFD;IMAGE HASH FFFF;Cf;0;BN;;;;;N;;;;;
 \end{verbatim}
 
-\subsubsection{Line Breaking}
+\subsection{Line Breaking}
 
 \begin{verbatim}
 D0000..DFFFD;CM   # Cf[65,534] IMAGE HASH                                                                                                                                         
@@ -231,5 +267,7 @@ EFFFC..DFFFD;CM   # Cf     [2] IMAGE HASH
 Typeset by \LaTeX . Made with \( 100\%  \) recycled bits.
 All opinions belong to the authors and do not reflect the opinions
 of their associated employers.
+
+Fork me on GitHub: \url{https://github.com/srl295/srl-unicode-proposals}
 
 \end{document}

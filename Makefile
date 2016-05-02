@@ -6,9 +6,19 @@ HOOKTYPE=commit checkout merge
 HOOKS=$(HOOKTYPE:%=.git/hooks/post-%)
 HOOKURL=https://raw.githubusercontent.com/Hightor/gitinfo2/CTAN/post-xxx-sample.txt
 FETCH=curl  $(HOOKURL)
+SAMPLE=chai.json chai-encode.txt chai-decode.txt
 
 all:	$(HOOKS) $(PDFS)
 	echo all done
+
+
+samples: $(SAMPLE)
+
+chai-encode.txt chai.json chai.txt: chai-encode.js chai.png
+	node chai-encode.js | tee chai-encode.txt
+
+chai-decode.txt: chai-decode.js chai.json chai.txt
+	node chai-decode.js | tee chai-decode.txt
 
 COMMON_FILES=$(COMMON).sty $(COMMON).bib
 
