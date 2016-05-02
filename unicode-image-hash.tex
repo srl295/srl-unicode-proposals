@@ -113,8 +113,7 @@ values $\mathrm{0000}_{16}$ through $\mathrm{FFFD}_{16}$. In addition,
 we envision allocating U+EFFFC to represent the value
 $\mathrm{FFFE}_{16}$, and U+EFFFD to represent the value
 $\mathrm{FFFF}_{16}$. We refer to these 65,536 code points as ``CHAI
-characters.'' Each code point will have a combining-character general
-property. \textcolor{red}{\bf (which?)}
+characters.'' Each code point will have general category \texttt{Cf}.
 
 In UTF-8, UTF-16, and UTF-32, every code point outside the BMP
 requires 32 bits to encode. As a result, the efficiency of
@@ -196,6 +195,19 @@ emoji, it can display it, but otherwise the receiver would display the
 fallback (base) character and ask the user to push a button before
 retrieving the emoji description.
 
+\subsection{Character Data}
+
+65,536 characters are to be encoded.
+
+\subsubsection{Character Properties}
+
+\begin{verbatim}
+D0000;IMAGE HASH 0000;Cf;0;BN;;;;;N;;;;;
+...
+DFFFD;IMAGE HASH FFFD;Cf;0;BN;;;;;N;;;;;
+EFFFC;IMAGE HASH FFFE;Cf;0;BN;;;;;N;;;;;
+EFFFD;IMAGE HASH FFFF;Cf;0;BN;;;;;N;;;;;
+\end{verbatim}
 
 
 % Probably not needed - small enough.
