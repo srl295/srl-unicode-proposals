@@ -9,11 +9,18 @@
 \usepackage{uproposal}
 
 
-\title{Image Hash, or, the last frontier of Emoji encoding}
-\author{Steven R. Loomis (individual contribution) \\
-		srl@icu-project.org \url{https://srl295.github.io}}
+\title{Coded Hashes of Arbitrary Images\\\normalsize \sf (or: the last frontier of Emoji encoding)}
+\author{
+Steven R.~Loomis\\
+\small srl@icu-project.org\\
+\small (individual contribution)\\
+\and
+Keith Winstein\\
+\small keithw@cs.stanford.edu\\
+\small Stanford University\\
+}
 
-\date{2016-04-29}                                           % Activate to display a given date or no date'
+\date{2016-05-02}                                           % Activate to display a given date or no date'
 
 
 
@@ -27,21 +34,51 @@
 \section{Introduction}
 \addcontentsline{toc}{section}{Introduction}
 
-
-According to the Unicode Consortium's FAQ, 
-
 \begin{quote}
-Emoji are ``picture characters'' originally associated with cellular telephone usage in Japan, but now popular worldwide.
-\autocite{UnicodeFAQEmoji}
+Emoji are pictographs (pictorial symbols) that are typically presented
+in a colorful cartoon form and used inline in text. [\ldots] In
+Unicode 8.0, there is a total of 1,282 emoji, which are represented
+using 1,051 code points.\autocite{UTR51}
 \end{quote}
 
-The popularity of Emoji has been discussed elsewhere, but for the purposes of this document
-it is worth noting that over 735 code points have been designated Emoji\autocite[Section 3, ``Which Characters are Emoji'']{UTR51} with more in the pipeline.
-The stated longer-term goal for Unicode, however, is that implementations would support \textit{``embedded graphics, in addition to the emoji characters''}\autocite[Section 8, ``Longer Term Solutions'']{UTR51}.
+Recently, there has been considerable interest in adding newly created
+pictorial symbols, not found in any existing character set, to the
+Unicode Standard as emoji.\footnote{\textit{E.g.,}
+  \href{https://www.change.org/p/unicode-consortium-the-taco-emoji-needs-to-happen-aeb4ebc7-a323-441d-90b9-20b90c83a8c6}{Taco
+    Emoji campaign}, \href{http://www.beardemoji.com/}{Beard Emoji
+    campaign}, \href{http://www.dumplingemoji.org}{Dumpling Emoji
+    campaign}. There are currently 79 candidate emoji that have been
+  assigned tentative code points.} Advocacy groups and others request
+these code points because Unicode plain text remains the dominant
+interoperable interchange format for messaging. In practice, before a
+new emoji can be used, a code point must be assigned and be recognized
+by the sender and receiver. However, a longer-term goal for Unicode is
+that implementations should support ``embedded graphics, in addition
+to the emoji characters''\autocite[Section 8, ``Longer Term
+  Solutions'']{UTR51}.
 
-This document aims to present a proposed implementation of said stated goal, by
-a mechanism for encoding a unique embedded graphic identifier in plain text. If such a mechanism
-were widely adopted,  the need for additional code point allocation for Emoji should be obviated.
+In this proposal, we describe a mechanism to uniquely identify
+arbitrary images within a plain-text Unicode character sequence. This
+will allow implementors to create their own emoji without needing to
+request and wait for the assignment of a code point. The basic idea is
+to encode a globally-unique \emph{secure hash} of the emoji in a
+Unicode character sequence. Once the receiver knows the image's hash,
+it may already have the corresponding image, or may have a choice of
+several mechanisms to retrieve it.
+
+Our technique will gracefully degrade on legacy Unicode
+implementations, but our proposal is limited to allowing Unicode to
+\emph{uniquely identify} an arbitrary image. We propose to leave to
+implementors the details of how to retrieve the actual image.
+
+\section{Proposal}
+
+We propose that implementations be able to uniquely identify an
+arbitrary image within a Unicode character sequence. The means will be
+to encode, in a series of coded characters, a secure hash of a
+canonical representation of the image.
+
+
 
 \section{Non-Goals}
 \addcontentsline{toc}{section}{Non-Goals}
