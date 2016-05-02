@@ -18,6 +18,8 @@ Steven R.~Loomis\\
 Keith Winstein\\
 \small keithw@cs.stanford.edu\\
 \small Stanford University\\
+\and
+Jennifer 8. Lee\\
 }
 
 \date{2016-05-02\\\small\url{https://srl295.github.io}}                                           % Activate to display a given date or no date'
@@ -56,6 +58,16 @@ by the sender and receiver. However, a longer-term goal for Unicode is
 that implementations should support ``embedded graphics, in addition
 to the emoji characters''\autocite[Section 8, ``Longer Term
   Solutions'']{UTR51}.
+
+The demand for emoji characters has surged in the last few years as public has become enthralled by the multicolor glyphs that can appear in-line with text. Emoji have been the subject of an explosion of press pieces, numerous late-night television comedic segments, and even an upcoming movie from Sony Pictures Animation. Never has the encoding attracted such attention.
+As emoji use has proliferated, there have been increasing demands for better representation in the existing emoji set — ranging from hair variations (color and facial), to more female presence, to single-family households, to regional flags.\autocite{UTR52}
+
+However, the current emoji approval process takes upwards of 18 months, starting from when a proposal is first introduced, to when it moves out of the Unicode Emoji Subcommittee, to the Unicode Technical Committee, to ISO and back again for final approval. This current process, overseen by a relatively small organization whose stated main mission is focused on encoding existing languages, is widely understood as a bottleneck and also incredibly resource intensive on members’ time.
+
+To fill the demand for customizable glyphs, there has been an explosion of emoji-like images from a variety of vendors, ranging from personalized Bitmoji, to highly publicized “Kimoji”, to earnest refugee-themed emoji. These rogue “moji” are not technically emoji at all, but rather images or “stickers” that can be sent through messaging apps. In addition, vendors are using technical workarounds such as the Zero Width Joiner (ZWJ) and tagging to create emoji images that do not have to be assigned code points.
+
+Meanwhile, the variants of single emoji created by different vendors leads to confusion in the intent of the sender and recipient.\autocite{EmojiVarying} The inconsistent imagery is at tension with Unicode’s goal of having interoperable platform-neutral communication. 
+A longer term architectural solution is needed. 
 
 In this proposal, we describe a mechanism to uniquely identify
 arbitrary images within a plain-text Unicode character sequence. This
@@ -179,7 +191,8 @@ description.
 As Unicode Technical Report \#51 notes: ``There are also privacy
 aspects to implementations of embedded graphics: if the graphic itself
 is not packaged with the text, but instead is just a reference to an
-image on a server, then that server could track usage.''
+image on a server, then that server could track usage.''\autocite[Section 8, ``Longer Term
+  Solutions'']{UTR51}
 
 We agree. A similar exposure could occur if the protocol provides
 for the receiver to ask the sender to send an unknown emoji description;
@@ -258,6 +271,6 @@ Typeset by \LaTeX . Made with \( 100\%  \) recycled bits.
 All opinions belong to the authors and do not reflect the opinions
 of their associated employers.
 
-Fork me on GitHub: \url{https://github.com/srl295/srl-unicode-proposals}
+Source Repository: \small\url{https://github.com/srl295/srl-unicode-proposals}
 
 \end{document}
