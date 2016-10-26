@@ -9,7 +9,7 @@
 \usepackage{uproposal}
 \usepackage{textcomp}
 
-\title{Coded Hashes of Arbitrary Images\\\normalsize \sf (or: the last frontier of emoji encoding)}
+\title{Coded Hashes of Arbitrary Images (revised)\\\normalsize \sf (or: the last frontier of emoji encoding)}
 \author{
 Steven R.~Loomis\\
 \small srl@icu-project.org\\
@@ -24,9 +24,7 @@ Jennifer 8. Lee\\
 \small Emojination\\
 }
 
-\date{2016-05-02\\\small\url{https://srl295.github.io}}                                           % Activate to display a given date or no date'
-
-
+\date{2016-10-draft\\\small\url{https://srl295.github.io}}                                           % Activate to display a given date or no date'
 
 
 \makeindex
@@ -37,6 +35,8 @@ Jennifer 8. Lee\\
 
 \section{Introduction}
 \addcontentsline{toc}{section}{Introduction}
+
+This proposal is an update to L2/16-105\autocite{L216105}.
 
 \begin{quote}
 Emoji are pictographs (pictorial symbols) that are typically presented
@@ -61,7 +61,7 @@ that implementations should support ``embedded graphics, in addition
 to the emoji characters''\autocite[Section 8, ``Longer Term
   Solutions'']{UTR51}.
   
-In this proposal, we describe a mechanism to uniquely identify
+In this updated proposal, we describe a mechanism to uniquely identify
 arbitrary images within a plain-text Unicode character sequence. This
 will allow implementers to create their own emoji without needing to
 request and wait for the assignment of a code point. The basic idea is
@@ -74,7 +74,7 @@ Our technique will gracefully degrade on legacy Unicode
 implementations, but our proposal is limited to allowing Unicode to
 \emph{uniquely identify} an arbitrary image. We propose to leave to
 implementers the details of how to retrieve the actual image.
-  
+
   \subsection{Background} 
 
 The demand for emoji characters has surged in the last few years as public has become enthralled by the multicolor glyphs that can appear in-line with text. Emoji have been the subject of an explosion of press pieces, numerous late-night television comedic segments, and even an upcoming movie from Sony Pictures Animation. Never has the encoding attracted such attention.
@@ -121,21 +121,10 @@ SHA-256 is believed to have strong second-preimage resistance.
 
 \subsection{Code points allocated to express the secure hash}
 
-We propose to allocate 65,536 ($2^{16}$) code points to represent bits
-of the secure hash. Each code point will express 16 bits of the secure
-hash. We envision allocating Plane 13, from U+D0000 through
-U+DFFFD. (The two code points at the end of the plane are
-noncharacters.) These 65,534 code points will represent the 16-bit
-values $\mathrm{0000}_{16}$ through $\mathrm{FFFD}_{16}$. In addition,
-we envision allocating U+EFFFC to represent the value
-$\mathrm{FFFE}_{16}$, and U+EFFFD to represent the value
-$\mathrm{FFFF}_{16}$. We refer to these 65,536 code points as ``CHAI
-characters.'' Each code point will have general category \texttt{Cf}.
-
-In UTF-8, UTF-16, and UTF-32, every code point outside the BMP
-requires 32 bits to encode. As a result, the efficiency of
-this scheme will be 50\% in each Unicode encoding scheme (16 bits of
-the hash will consume 32 bits in memory, on disk, or on the wire).
+The prior proposal proposed to allocate 65,536 ($2^{16}$) code points to represent bits
+of the secure hash, resulting in a 50\% efficiency in each Unicode encoding scheme (16 bits of
+the hash will consume 32 bits in memory, on disk, or on the wire)\autocite{L216105}. This current proposal has a reduced encoding ``footprint'', meaning that the coded hash will take more bits
+on the wire. The goals and much of the mechanism remains the same.
 
 \subsection{Encoding an implementation-defined emoji}
 
@@ -259,6 +248,7 @@ EFFFD;IMAGE HASH FFFF;Cf;0;BN;;;;;N;;;;;
 D0000..DFFFD;CM   # Cf[65,534] IMAGE HASH                                                                                                                                         
 EFFFC..DFFFD;CM   # Cf     [2] IMAGE HASH                                                                                                                                         
 \end{verbatim}
+
 
 
 
