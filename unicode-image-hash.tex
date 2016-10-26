@@ -133,10 +133,13 @@ that most closely approximates the implementation-defined emoji. This
 will allow rendering to degrade gracefully on receivers that do not
 support CHAIs.
 
+Next, the special tag \textit{U+E0002 IMAGE HASH TAG} is sent.
+
+
 Next, the sender encodes the secure hash by appending between between
-one and sixteen CHAI characters. This will represent a prefix of the
+multiple TAG characters (chosing from 0-9 and a-f). This will represent a prefix of the
 SHA-256 hash of the emoji description. The sender chooses how many
-bits of the hash to include. (We expect 80 bits, or five CHAI
+bits of the hash to include. (We expect 80 bits, or 20 TAG
 characters, to be sufficient for typical use today. The risk of
 including too few bits is that the hash may no longer be globally unique,
 especially in the presence of an attacker who wishes to create a different
@@ -144,11 +147,11 @@ image with the same hash prefix.)
 
 Therefore, the actual encoding is:
 
-\texttt { <\textit{basechar}> + <\textit{CHAI char}> + <\textit{CHAI char}> + <\textit{CHAI char}> \ldots }
+\texttt { <\textit{basechar}> + <\textit{U+E0002 IMAGE HASH TAG}> + <\textit{ TAG [0-9a-f] }> +<\textit{ TAG [0-9a-f] }> +<\textit{ TAG [0-9a-f] }> + \ldots <\textit{U+E007F CANCEL TAG}> }
 
 where the \textit{basechar} represents a fallback base character, and
-each CHAI character (from the range U+D0000 .. U+DFFFD and U+EFFFC
-.. U+EFFFD) represents 16 bits of the secure hash of the emoji
+each TAG [0-9a-f] character (from the range U+E0030 .. U+E0039 and U+E0061
+.. U+E0066) represents 4 bits of the secure hash of the emoji
 description.
 
 \subsection{Receiving and rendering a CHAI}
@@ -220,8 +223,8 @@ Sample encoding
 \lstinputlisting[language=,frame=single,basicstyle=\small]{chai-encode.txt}
 
 
-Sample decoding
-\lstinputlisting[language=,frame=single,basicstyle=\small]{chai-decode.txt}
+%Sample decoding
+%\lstinputlisting[language=,frame=single,basicstyle=\small]{chai-decode.txt}
 
 
 The resulting hash matches the first 80 bits of 
@@ -230,24 +233,22 @@ The resulting hash matches the first 80 bits of
 
 \section{Character Data}
 
-This proposal requests a total of 65,536 new characters to be encoded.
+This proposal requests a total of 1 new character to be encoded.
 
 \subsection{Character Properties}
 
 \begin{verbatim}
-D0000;IMAGE HASH 0000;Cf;0;BN;;;;;N;;;;;
-...
-DFFFD;IMAGE HASH FFFD;Cf;0;BN;;;;;N;;;;;
-EFFFC;IMAGE HASH FFFE;Cf;0;BN;;;;;N;;;;;
-EFFFD;IMAGE HASH FFFF;Cf;0;BN;;;;;N;;;;;
+E0002;IMAGE HASH TAG;Cf;0;BN;;;;;N;;;;;
 \end{verbatim}
 
-\subsection{Line Breaking}
+% TBD
 
-\begin{verbatim}
-D0000..DFFFD;CM   # Cf[65,534] IMAGE HASH                                                                                                                                         
-EFFFC..DFFFD;CM   # Cf     [2] IMAGE HASH                                                                                                                                         
-\end{verbatim}
+%\subsection{Line Breaking}
+%
+%\begin{verbatim}
+%D0000..DFFFD;CM   # Cf[65,534] IMAGE HASH                                                                                                                                         
+%EFFFC..DFFFD;CM   # Cf     [2] IMAGE HASH                                                                                                                                         
+%\end{verbatim}
 
 
 

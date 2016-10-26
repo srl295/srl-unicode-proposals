@@ -1,11 +1,27 @@
 # Read chai.png, wrote chai.json
 # SHA-256 hash: 
  37d8c5403d29ec7d6f59b02690414de77b0597735a953c2a00fbea50b5f79bb5
-# Going to use 5 CHAI chars or 80 bits.
-
+# Going to use 20 CHAI chars or 80 bits.
 # <U+2615> (base)
-# <U+D37D8> IMAGE HASH 37D8
-# <U+DC540> IMAGE HASH C540
-# <U+D3D29> IMAGE HASH 3D29
-# <U+DEC7D> IMAGE HASH EC7D
-# <U+D6F59> IMAGE HASH 6F59
+# <U+E0002 IMAGE HASH TAG>
+# <U+E0033              TAG DIGIT 3>
+# <U+E0037              TAG DIGIT 7>
+# <U+E0037 TAG LATIN SMALL LETTER d>
+# <U+E0038              TAG DIGIT 8>
+# <U+E0038 TAG LATIN SMALL LETTER c>
+# <U+E0035              TAG DIGIT 5>
+# <U+E0034              TAG DIGIT 4>
+# <U+E0030              TAG DIGIT 0>
+# <U+E0033              TAG DIGIT 3>
+# <U+E0033 TAG LATIN SMALL LETTER d>
+# <U+E0032              TAG DIGIT 2>
+# <U+E0039              TAG DIGIT 9>
+# <U+E0039 TAG LATIN SMALL LETTER e>
+# <U+E0039 TAG LATIN SMALL LETTER c>
+# <U+E0037              TAG DIGIT 7>
+# <U+E0037 TAG LATIN SMALL LETTER d>
+# <U+E0036              TAG DIGIT 6>
+# <U+E0036 TAG LATIN SMALL LETTER f>
+# <U+E0035              TAG DIGIT 5>
+# <U+E0039              TAG DIGIT 9>
+# <U+E007 CANCEL TAG>
