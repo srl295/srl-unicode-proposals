@@ -9,7 +9,11 @@
 \usepackage{uproposal}
 \usepackage{textcomp}
 
-\title{Coded Hashes of Arbitrary Images (revised)\\\normalsize \sf (or: the last frontier of emoji encoding)}
+\usepackage{draftwatermark}
+\SetWatermarkText{DRAFT}
+\SetWatermarkScale{1}
+
+\title{Coded Hashes of Arbitrary Images\\\normalsize \sf (Revised Preliminary Proposal)}
 \author{
 Steven R.~Loomis\\
 \small srl@icu-project.org\\
@@ -24,7 +28,7 @@ Jennifer 8. Lee\\
 \small Emojination\\
 }
 
-\date{2016-10-draft\\\small\url{https://srl295.github.io}}                                           % Activate to display a given date or no date'
+\date{2016-10-26\\\small\url{https://srl295.github.io}}
 
 
 \makeindex
@@ -63,17 +67,21 @@ to the emoji characters''\autocite[Section 8, ``Longer Term
   
 In this updated proposal, we describe a mechanism to uniquely identify
 arbitrary images within a plain-text Unicode character sequence. This
-will allow implementers to create their own emoji without needing to
+will allow implementers to retrieve emoji characters as glyphs from 
+% deleted: "create their own emoji"
+a font without needing to
 request and wait for the assignment of a code point. The basic idea is
 to encode a globally-unique \emph{secure hash} of the emoji in a
-Unicode character sequence. Once the receiver knows the image's hash,
+Unicode character sequence. Once the implementation knows the image's hash,
 it may already have the corresponding image, or may have a choice of
 several mechanisms to retrieve it.
 
 Our technique will gracefully degrade on legacy Unicode
 implementations, but our proposal is limited to allowing Unicode to
-\emph{uniquely identify} an arbitrary image. We propose to leave to
-implementers the details of how to retrieve the actual image.
+\emph{uniquely identify} an arbitrary image.
+
+% We propose to leave to
+%implementers the details of how to retrieve the actual image.
 
   \subsection{Background} 
 
@@ -87,7 +95,6 @@ To fill the demand for customizable glyphs, there has been an explosion of emoji
 Meanwhile, the variants of single emoji created by different vendors leads to confusion in the intent of the sender and recipient.\autocite{EmojiVarying} The inconsistent imagery is at tension with Unicode’s goal of having interoperable platform-neutral communication. 
 A longer term architectural solution is needed. 
 
-
 \section{Proposal}
 
 \textbf{Outline}: implementations will be able to create
@@ -95,9 +102,11 @@ A longer term architectural solution is needed.
 to receivers. The sender encodes a secure hash of the emoji (which
 serves as an unforgeable globally unique identifier) in a sequence of
 coded characters, which we call a Coded Hash of an Arbitrary Image
-(CHAI). Upon receiving the CHAI sequence, the receiving implementation
-may already know the corresponding image, or may have to request it
-either from the sender or from a third party.
+(CHAI).
+
+%Upon receiving the CHAI sequence, the receiving implementation
+%may already know the corresponding image, or may have to request it
+%either from the sender or from a third party.
 
 \subsection{Representing the emoji}
 
