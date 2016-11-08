@@ -85,7 +85,8 @@ implementations, but our proposal is limited to allowing Unicode to
 
   \subsection{Background} 
 
-The demand for emoji characters has surged in the last few years as public has become enthralled by the multicolor glyphs that can appear in-line with text. Emoji have been the subject of an explosion of press pieces, numerous late-night television comedic segments, and even an upcoming movie from Sony Pictures Animation. Never has the encoding attracted such attention.
+The demand for emoji characters has surged in the last few years as public has become enthralled by the multicolor glyphs that can appear in-line with text. Emoji have been the subject of an explosion of press pieces, numerous late-night television comedic segments, an upcoming movie from Sony Pictures Animation, and even a dedicated conference in November 2016. Never has the encoding attracted such attention.
+
 As emoji use has proliferated, there have been increasing demands for better representation in the existing emoji set — ranging from hair variations (color and facial), to more female presence, to single-family households, to regional flags.\autocite{UTR52}
 
 However, the current emoji approval process takes upwards of 18 months, starting from when a proposal is first introduced, to when it moves out of the Unicode Emoji Subcommittee, to the Unicode Technical Committee, to ISO and back again for final approval. This current process, overseen by a relatively small organization whose stated main mission is focused on encoding existing languages, is widely understood as a bottleneck and also incredibly resource intensive on members’ time.
@@ -103,6 +104,12 @@ to receivers. The sender encodes a secure hash of the emoji (which
 serves as an unforgeable globally unique identifier) in a sequence of
 coded characters, which we call a Coded Hash of an Arbitrary Image
 (CHAI).
+
+New emoji can then be created without (1) needing permission from any other party,
+(2) getting a code point assigned from any central registry (such as Unicode or ISO 10646)
+(3) claiming an unknown/unassigned ZWJ sequence or (4) waiting for the publication of Unicode, UCS,
+or even updated data files from the UTC Emoji SubCommittee.  Implementers could update the repertoire 
+of emoji as frequently or infrequently as they wish.
 
 %Upon receiving the CHAI sequence, the receiving implementation
 %may already know the corresponding image, or may have to request it
@@ -133,7 +140,7 @@ SHA-256 is believed to have strong second-preimage resistance.
 The prior proposal proposed to allocate 65,536 ($2^{16}$) code points to represent bits
 of the secure hash, resulting in a 50\% efficiency in each Unicode encoding scheme (16 bits of
 the hash will consume 32 bits in memory, on disk, or on the wire)\autocite{L216105}. This current proposal has a reduced encoding ``footprint'', meaning that the coded hash will take more bits
-on the wire. The goals and much of the mechanism remains the same.
+on the wire. The general mechanism remains similar to the prior proposal.
 
 \subsection{Encoding an implementation-defined emoji}
 
@@ -143,7 +150,6 @@ will allow rendering to degrade gracefully on receivers that do not
 support CHAIs.
 
 Next, the special tag \textit{U+E0002 IMAGE HASH TAG} is sent.
-
 
 Next, the sender encodes the secure hash by appending between between
 multiple TAG characters (chosing from 0-9 and a-f). This will represent a prefix of the
@@ -169,50 +175,58 @@ On receipt, the receiver determines if it already knows of an emoji
 whose hash matches the prefix encoded in the CHAI characters. If so,
 it displays the emoji (either using the image provided in the emoji
 description, or an image known locally). Otherwise, the receiver
-displays the base character while it attempts to retrieve an emoji
-description whose hash matches the encoded hash prefix.
+displays the base character.
 
-We do not specify how this retrieval will take place; we expect it to
-vary based on the messaging protocol. In some protocols, it might be
-easiest for the receiver to simply ask the sender to send the full
-emoji description. In others, the receiver might consult an online
-repository run by the implementing vendor. Alternately, the receiver
-might consult a community repository where anybody can contribute any
-emoji description.
+% …while it attempts to retrieve an emoji
+%description whose hash matches the encoded hash prefix.
+%
+%We do not specify how this retrieval will take place; we expect it to
+%vary based on the messaging protocol. In some protocols, it might be
+%easiest for the receiver to simply ask the sender to send the full
+%emoji description. In others, the receiver might consult an online
+%repository run by the implementing vendor. Alternately, the receiver
+%might consult a community repository where anybody can contribute any
+%emoji description.
 
 Because the CHAI serves as an unforgeable globally unique identifier
 for the emoji description, the receiver is intended to have confidence
-that if it finds a matching emoji description from anywhere, it can
+that if it finds a matching emoji description, it can
 display it per the sender's intent.
 
-Depending on the protocol, as the input arrives, the receiver may have
-some ambiguity about when the sequence of CHAI characters ends.  A
-receiver may choose to wait until the next non-combining character
-(signaling the end of the combining character sequence), or a
-protocol-defined end-of-message signal, before retrieving the emoji
-description.
+% SRL - let's leave this out ,don't want to have ambiguity.
+%If the terminating \textit{U+E007F CANCEL TAG} was not encountered,
+%an implementation MAY attempt to lookup the hash given the available characters
 
-\subsection{Privacy}
+%Depending on the protocol, as the input arrives, the receiver may have
+%some ambiguity about when the sequence of CHAI characters ends.  A
+%receiver may choose to wait until the next non-combining character
+%(signaling the end of the combining character sequence), or a
+%protocol-defined end-of-message signal, before retrieving the emoji
+%description.
 
-As Unicode Technical Report \#51 notes: ``There are also privacy
-aspects to implementations of embedded graphics: if the graphic itself
-is not packaged with the text, but instead is just a reference to an
-image on a server, then that server could track usage.''\autocite[Section 8, ``Longer Term
-  Solutions'']{UTR51}
 
-We agree. A similar exposure could occur if the protocol provides
-for the receiver to ask the sender to send an unknown emoji description;
-this could unwittingly expose if anybody \emph{else} has ever sent the same
-emoji to the receiver.
-
-It is not the goal of this document to address all aspects of embedded
-graphics, and we intend to leave to domain experts and implementers
-the decision on how to handle these questions. For example, a client
-might behave similarly to current practice in retrieving external
-images in email. If the receiver already knows of the identified
-emoji, it can display it, but otherwise the receiver would display the
-fallback (base) character and ask the user to push a button before
-retrieving the emoji description.
+% SRL: leaving Privacy out for now, since we are de emphasizing the arbitrary retrieval
+%\subsection{Privacy}
+%
+%As Unicode Technical Report \#51 notes: ``There are also privacy
+%aspects to implementations of embedded graphics: if the graphic itself
+%is not packaged with the text, but instead is just a reference to an
+%image on a server, then that server could track usage.''\autocite[Section 8, ``Longer Term
+%  Solutions'']{UTR51}
+%
+%We agree. A similar exposure could occur if the protocol provides
+%for the receiver to ask the sender to send an unknown emoji description;
+%this could unwittingly expose if anybody \emph{else} has ever sent the same
+%emoji to the receiver.
+%
+%It is not the goal of this document to address all aspects of embedded
+%graphics, and we intend to leave to domain experts and implementers
+%the decision on how to handle these questions. For example, a client
+%might behave similarly to current practice in retrieving external
+%images in email. If the receiver already knows of the identified
+%emoji, it can display it, but otherwise the receiver would display the
+%fallback (base) character and ask the user to push a button before
+%retrieving the emoji description.
 
 \section{Example}
 
@@ -259,7 +273,39 @@ E0002;IMAGE HASH TAG;Cf;0;BN;;;;;N;;;;;
 %EFFFC..DFFFD;CM   # Cf     [2] IMAGE HASH                                                                                                                                         
 %\end{verbatim}
 
+\clearpage
 
+\section{Alternate structure}
+
+As of this writing, there is a proposal on the UTC agenda to re-activate the UTS 52 tag mechanism \autocite{L216226}.
+An alternative, which would not require any additional characters encoded, would be to make use of the UTS 52 tag mechanism.
+
+A possible alternate structure under the UTS 52 model is given in Table 1.
+
+
+%E0030 .. U+E0039 and U+E0061.. U+E0066
+
+\begin{table}[]
+\centering
+\caption{UTS52 Hash Sequence}
+%\label{my-label}
+\begin{tabular}{| r | l |}
+\hline
+	tag\_key	&	tag-H \\
+\hline
+	tag\_base	&	Any character with Emoji=Yes \\
+\hline
+	tag\_value	&	[\textbackslash{}x{E0030}-\textbackslash{}x{E0039}\textbackslash{}x{E0061}-\textbackslash{}x{E0066}]\+  \\
+\hline
+	
+\end{tabular}
+\end{table}
+
+The above example could be re-encoded as:
+	
+\texttt{<U+2615>}\underline{H37d8c5403d29ec7d6f59b02690414de77b0597735a953c2a00fbea50b5f79bb5}\texttt{<U+E007F>}
+
+(where the \underline{H} is tag-H  and \underline{0-9a-f} are the corresponding tag characters)
 
 
 % Probably not needed - small enough.
