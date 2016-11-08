@@ -9,9 +9,9 @@
 \usepackage{uproposal}
 \usepackage{textcomp}
 
-\usepackage{draftwatermark}
-\SetWatermarkText{DRAFT}
-\SetWatermarkScale{1}
+%\usepackage{draftwatermark}
+%\SetWatermarkText{DRAFT}
+%\SetWatermarkScale{1}
 
 \title{Coded Hashes of Arbitrary Images\\\normalsize \sf (Revised Preliminary Proposal)}
 \author{
@@ -28,7 +28,7 @@ Jennifer 8. Lee\\
 \small Emojination\\
 }
 
-\date{2016-10-26\\\small\url{https://srl295.github.io}}
+\date{2016-11-08\\\small\url{https://srl295.github.io}}
 
 
 \makeindex
@@ -149,20 +149,22 @@ that most closely approximates the implementation-defined emoji. This
 will allow rendering to degrade gracefully on receivers that do not
 support CHAIs.
 
-Next, the special tag \textit{U+E0002 IMAGE HASH TAG} is sent.
+Next, the special tag \textit{U+E0002 TAG CODED HASH MODIFIER} is sent.
 
 Next, the sender encodes the secure hash by appending between between
 multiple TAG characters (chosing from 0-9 and a-f). This will represent a prefix of the
 SHA-256 hash of the emoji description. The sender chooses how many
-bits of the hash to include. (We expect 80 bits, or 20 TAG
-characters, to be sufficient for typical use today. The risk of
+bits of the hash to include. 128 bits, or 32 TAG
+characters, is the minimum required. The risk of
 including too few bits is that the hash may no longer be globally unique,
 especially in the presence of an attacker who wishes to create a different
-image with the same hash prefix.)
+image with the same hash prefix.
+
+
 
 Therefore, the actual encoding is:
 
-\texttt { <\textit{basechar}> + <\textit{U+E0002 IMAGE HASH TAG}> + <\textit{ TAG [0-9a-f] }> +<\textit{ TAG [0-9a-f] }> +<\textit{ TAG [0-9a-f] }> + \ldots <\textit{U+E007F CANCEL TAG}> }
+\texttt { <\textit{basechar}> + <\textit{U+E0002 TAG CODED HASH MODIFIER}> + <\textit{ TAG [0-9a-f] }> +<\textit{ TAG [0-9a-f] }> +<\textit{ TAG [0-9a-f] }> + \ldots <\textit{U+E007F CANCEL TAG}> }
 
 where the \textit{basechar} represents a fallback base character, and
 each TAG [0-9a-f] character (from the range U+E0030 .. U+E0039 and U+E0061
@@ -242,6 +244,8 @@ Sample PNG
 
 \includegraphics{chai.png}
 
+\subsection{chai.txt}
+
 Sample encoding
 \lstinputlisting[language=,frame=single,basicstyle=\small]{chai-encode.txt}
 
@@ -261,7 +265,7 @@ This proposal requests a total of 1 new character to be encoded.
 \subsection{Character Properties}
 
 \begin{verbatim}
-E0002;IMAGE HASH TAG;Cf;0;BN;;;;;N;;;;;
+E0002;TAG CODED HASH MODIFIER;Cf;0;BN;;;;;N;;;;;
 \end{verbatim}
 
 % TBD
@@ -275,12 +279,13 @@ E0002;IMAGE HASH TAG;Cf;0;BN;;;;;N;;;;;
 
 \clearpage
 
-\section{Alternate structure}
+\section{Alternate structure — UTS 52}
 
 As of this writing, there is a proposal on the UTC agenda to re-activate the UTS 52 tag mechanism \autocite{L216226}.
 An alternative, which would not require any additional characters encoded, would be to make use of the UTS 52 tag mechanism.
 
 A possible alternate structure under the UTS 52 model is given in Table 1.
+The net effect is replacing the proposed new character \texttt{U+E0002 TAG CODED HASH MODIFIER} with \texttt{U+E0048 TAG CAPITAL LETTER H}.
 
 
 %E0030 .. U+E0039 and U+E0061.. U+E0066
@@ -295,7 +300,7 @@ A possible alternate structure under the UTS 52 model is given in Table 1.
 \hline
 	tag\_base	&	Any character with Emoji=Yes \\
 \hline
-	tag\_value	&	[\textbackslash{}x{E0030}-\textbackslash{}x{E0039}\textbackslash{}x{E0061}-\textbackslash{}x{E0066}]\+  \\
+	tag\_value	&	\texttt{[\textbackslash{}x{E0030}-\textbackslash{}x{E0039}\textbackslash{}x{E0061}-\textbackslash{}x{E0066}]\+}  \\
 \hline
 	
 \end{tabular}
@@ -303,7 +308,7 @@ A possible alternate structure under the UTS 52 model is given in Table 1.
 
 The above example could be re-encoded as:
 	
-\texttt{<U+2615>}\underline{H37d8c5403d29ec7d6f59b02690414de77b0597735a953c2a00fbea50b5f79bb5}\texttt{<U+E007F>}
+\texttt{<U+2615>}\underline{H37d8c5403d29ec7d6f59b02690414de7}\texttt{<U+E007F>}
 
 (where the \underline{H} is tag-H  and \underline{0-9a-f} are the corresponding tag characters)
 
