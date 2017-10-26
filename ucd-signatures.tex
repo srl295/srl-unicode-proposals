@@ -1,0 +1,187 @@
+% !TEX TS-program = XeLaTeX
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+
+%!TEX encoding = UTF-8 Unicode
+% !BIB TS-program =
+
+\documentclass[12pt]{article}
+
+\usepackage{uproposal}
+\usepackage{textcomp}
+
+%\usepackage{draftwatermark}
+%\SetWatermarkText{DRAFT}
+%\SetWatermarkScale{1}
+
+\title{Unicode Data Publication Security\\\normalsize \sf (Preliminary Proposal)}
+\author{Steven R.~Loomis — srloomis@us.ibm.com\\\small\url{https://srl295.github.io}}
+
+\date{2017-10-23}
+
+
+\makeindex
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+Trust in electronic data is a common and persistent concern. Unicode data, such as the UCD, is not exempt from these concerns. Unicode properties are used in many security-related applications.\autocite{spotify2013} This document attempts to introduce some steps which can be taken by the UTC to allow consumers of our data files to verify the integrity of downloaded files, making use of tools such as GPG\autocite{gnupg}.
+
+It is an explicit non-goal of this document to introduce change simply for the sake of change. The impact on existing processes, particularly on the UCD generation and release process, and the editorial committee's workload, must be considered.
+
+\section{Background}
+\addcontentsline{toc}{section}{Background}
+
+Consumers of data need to be able to verify that (1) a data file has been produced by a trusted source, and secondly that (2) the data file has not been tampered with, whether unintentionally (such as via human or network error) or maliciously.  To accomplish goal (1), the \emph{identity} of the author needs to be proved. To accomplish goal (2), the \emph{integrity} of the data must be proved.
+
+Examples of projects proving the identity and integrity of downloadable content include Apache\autocite{apache-release-signing}, ICU\autocite{icuverify}, and Node.js\autocite{nodejs-release-binaries}.
+
+\textbf{Please see the Apache\autocite{apache-release-signing} document in particular for detailed explanations of the terms and tools used in this document.}\footnote{This version of the document does not repeat generic information and instructions about how to use GPG and other tools, beyond the specifics of how to apply them to Unicode data.  This author is willing to expand either this document, or other relevant documentation, as needed to support the UTC's own processes and guidance to consumers downloading the data.}
+
+\section{Process Overview}
+\addcontentsline{toc}{section}{Process Overview}
+
+\begin{enumerate}
+
+\item GPG public keys should be used for the purpose of signing Unicode data files. These can be created if needed, or existing ones used. These keys should be kept reasonably safe and up to date.
+
+\item For cases where we have many individual text files, it would be unwieldy to add a signature file for each text file. It would be better to use a single {\tt SHASUM} file containing all hash values, and then one single gpg signature on the {\tt SHASUM} file.
+
+\item Signing of data files is \emph{not} necessary for pre-release data. However, the {\tt SHASUM} file can remain valuable to ensure the integrity of the downloaded files, at least at the beta level.
+
+\item Ideally, data files would be signed by the exact maintainers who generated, edited, and/or uploaded the files. However, to prevent adding undue burden, a simpler process involves adding the signatures after uploading, and then requesting the original maintainers to verify after the fact that the correct files were signed.
+
+\end{enumerate}
+
+\newpage
+\section{Recommendation}
+\addcontentsline{toc}{section}{Recommendation}
+
+\subsection{General}
+\addcontentsline{toc}{subsection}{General}
+
+\begin{enumerate}
+
+\item It is recommended to use encryption in processes where possible:   ssh instead of telnet,   TLS-encrypted protocols instead of unencrypted smtp, pop, imap, ftp, and http.    \url{https://unicode.org} itself has recently upgraded to use (and prefer) https over http.
+
+\item The appropriate documentation should be updated to give consumers of data information on how to verify their downloaded data.
+
+\end{enumerate}
+
+\subsection{Key Management}
+\addcontentsline{toc}{subsection}{Key Management}
+
+\begin{enumerate}
+
+\item There should be a {\tt KEYS} file for Unicode, perhaps located at {\tt https://unicode.org/KEYS}.
+
+\item This file should contain all public GPG keys used to sign Unicode data files. Ideally, the keys would be cross-signed with each other to produce a web of trust.
+
+\item A key might be created with {\tt gpg --gen-key}
+
+\item The {\tt KEYS}  file  might be updated as follows:
+
+\begin{verbatim}
+\$  (gpg --list-sigs 8BBE8BC2 ; gpg --armor --export 8BBE8BC2) | tee -a KEYS
+pub   1024R/8BBE8BC2 2017-10-26 [expires: 2022-10-25]
+uid                  Some Unicoder <unicoder@unicode.example.org>
+…
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mI0EWfJaUgEEAP0HBJt0HNdV/lle0ADYWopZKjxMo/d8J43br4G8mCFaNtx7V9iU
+    …lots of stuff omitted…
+rl/kiGzHxXIo6A0t2Tx0OE5URA==
+=HmNb
+-----END PGP PUBLIC KEY BLOCK-----
+
+\end{verbatim}
+
+\item Unicode officers should authorize any changes to the {\tt KEYS} file.
+
+\end{enumerate}
+
+\subsection{Zipped and other Binary Files}
+\addcontentsline{toc}{subsection}{Zipped and other Binary Files}
+
+This section deals with signing for {\tt .zip} files such as in the {\tt zipped/} or {\tt ucdxml/} directories, and \emph{could} be applied to other binary files such as chart {\tt .pdf}s.
+
+For zipped files, such as in \url{https://www.unicode.org/Public/zipped/10.0.0/} we currently have:  {\tt ReadMe.txt}, {\tt UCD.zip}, {\tt Unihan.zip}.
+
+\begin{enumerate}
+
+\item A {\tt SHASUM} file should be created. (The GPG signatures also verify the integrity and authorship of the files, however, the SHASUM can be validated even in the absence of the GPG software or key validation.)
+
+\emph{Note: the output is very wide, so ellipses are used.}
+\begin{verbatim}
+\$ shasum -a 512 * | tee SHASUM512.txt
+c6def2…ea6  ReadMe.txt
+4e232…eee0  UCD.zip
+377f53…b12  Unihan.zip
+\end{verbatim}
+
+\item Next, a \emph{detached signature} is created for each file, including the {\tt SHASUM512.txt}. (Skip this for pre-release content.)
+
+\begin{verbatim}
+$ for file in SHASUM512.txt *.zip; do \
+gpg -u 8BBE8BC2 --armor --output ${file}.asc --detach-sig ${file}; \
+done
+\end{verbatim}
+
+\item As a result, the following files are now created in the above directory:
+
+{\tt ReadMe.txt SHASUM512.txt SHASUM512.txt.asc UCD.zip UCD.zip.asc Unihan.zip Unihan.zip.asc}
+
+\item Users can recalculate the SHA512 sums and compare against {\tt SHSUM512.txt}. Users can import the keys from the {\tt KEYS} file and verify any of the signatures ({\tt .asc} files) with {\tt gpg --verify UCD.zip.asc}.
+
+\end{enumerate}
+
+\subsection{Plain Text Files}
+\addcontentsline{toc}{subsection}{Plain Text Files}
+
+It would be unwieldy to have a separate signed file for each of the nearly 100 text files that makes up a UCD release such as found in \url{https://www.unicode.org/Public/10.0.0/}.  Instead, a single {\tt SHASUM} file is generated.
+
+\begin{enumerate}
+
+\item Generate a single {\tt SHASUM512.txt} file in the {\tt 10.0.0} directory.
+
+\begin{verbatim}
+$ shasum -a 512 $(find charts ucd ucdxml -type f) | tee SHASUM512.txt
+…1d19cccf26bed24f07d8979fe2f4ea93fb88d8b charts/CodeCharts.pdf
+…84579cb3cd9f2d08c21f87153aacae49bcc4ece ucd/ArabicShaping.txt
+…da3f7cc592514b970716492b60b861af9e3b847 ucd/auxiliary/GraphemeBreakProperty.txt
+…cc6e944f9076c6869d481a3b9550228e59521b8 ucd/auxiliary/GraphemeBreakTest.html
+…8e9bbee82bbf0f9125c1f0017e0c9f791ea4526 ucd/auxiliary/GraphemeBreakTest.txt
+…0b91820e089eb139b4444e743a97ba5368f2d3d ucd/auxiliary/LineBreakTest.html
+…c69070676c474f0270bf38f5a78795face74b33 ucd/auxiliary/LineBreakTest.txt
+…8b1c9a88979bc8a7d65f2abf1e72a943aaa6191 ucd/auxiliary/SentenceBreakProperty.txt
+…(many more)…
+\end{verbatim}
+
+\item Now, GPG sign the SHASUM.
+
+\begin{verbatim}
+$ gpg -u 8BBE8BC2 --armor --output SHASUM512.txt.asc --detach-sig SHASUM512.txt
+\end{verbatim}
+
+\item We now have {\tt SHASUM512.txt} and {\tt SHASUM512.txt.asc} its signature file.
+\end{enumerate}
+
+
+% Probably not needed - small enough.
+%\clearpage
+%\tableofcontents
+%\printindex
+
+%\clearpage
+\addcontentsline{toc}{chapter}{References}
+\printbibliography
+\section*{Colophon}
+
+Repo URL: \small\url{https://github.com/srl295/srl-unicode-proposals} 
+Typeset by \LaTeX . Made with \( 100\%  \) recycled bits.
+
+My GPG fingerprint is {\tt BA90 283A 60D6 7BA0 DD91  0A89 3932 080F 4FB4 19E3}
+\end{document}
