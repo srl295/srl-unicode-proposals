@@ -1,0 +1,267 @@
+SplineFontDB: 3.2
+FontName: Californian
+FullName: Californian
+FamilyName: Californian
+Weight: Regular
+Copyright: Copyright (c) 2020, Steven R. Loomis
+UComments: "2020-1-17: Created with FontForge (http://fontforge.org)"
+Version: 001.000
+ItalicAngle: 0
+UnderlinePosition: -100
+UnderlineWidth: 50
+Ascent: 800
+Descent: 200
+InvalidEm: 0
+LayerCount: 2
+Layer: 0 0 "Back" 1
+Layer: 1 0 "Fore" 0
+XUID: [1021 1002 -315880253 13945090]
+StyleMap: 0x0000
+FSType: 0
+OS2Version: 0
+OS2_WeightWidthSlopeOnly: 0
+OS2_UseTypoMetrics: 1
+CreationTime: 1579314693
+ModificationTime: 1579315705
+OS2TypoAscent: 0
+OS2TypoAOffset: 1
+OS2TypoDescent: 0
+OS2TypoDOffset: 1
+OS2TypoLinegap: 90
+OS2WinAscent: 0
+OS2WinAOffset: 1
+OS2WinDescent: 0
+OS2WinDOffset: 1
+HheadAscent: 0
+HheadAOffset: 1
+HheadDescent: 0
+HheadDOffset: 1
+MarkAttachClasses: 1
+DEI: 91125
+Encoding: ISO8859-1
+UnicodeInterp: none
+NameList: AGL For New Fonts
+DisplaySize: -48
+AntiAlias: 1
+FitToEm: 0
+WinInfo: 0 22 9
+BeginPrivate: 0
+EndPrivate
+BeginChars: 256 7
+
+StartChar: F
+Encoding: 70 70 0
+Width: 781
+VWidth: 0
+Flags: W
+HStem: 378 87<248 487> 651 123<273 687>
+VStem: 109 129<18 774>
+LayerCount: 2
+Fore
+SplineSet
+487 465 m 1
+ 487 378 l 1
+ 248 378 l 1
+ 248 465 l 1
+ 487 465 l 1
+273 772 m 1
+ 706 774 l 1
+ 687 651 l 1
+ 264 651 l 1
+ 273 772 l 1
+109 774 m 1
+ 238 774 l 1
+ 238 18 l 1
+ 109 18 l 1
+ 109 774 l 1
+EndSplineSet
+Validated: 1
+EndChar
+
+StartChar: underscore
+Encoding: 95 95 1
+Width: 169
+VWidth: 0
+Flags: W
+HStem: 22 78<-625 -43>
+LayerCount: 2
+Fore
+SplineSet
+-625 100 m 5
+ -43 100 l 5
+ -43 22 l 5
+ -625 22 l 5
+ -625 100 l 5
+EndSplineSet
+Validated: 1
+EndChar
+
+StartChar: R
+Encoding: 82 82 2
+Width: 758
+VWidth: 0
+Flags: W
+HStem: 24 0 276 120<177 591> 423 186<507 612> 630 144<171 618>
+VStem: 42 114<0 795> 507 105<423 609>
+LayerCount: 2
+Fore
+SplineSet
+423 246 m 1
+ 588 261 l 1
+ 588 261 468.645507812 201.22265625 510 141 c 0
+ 527.275390625 115.842773438 612 86.853515625 588 67.4267578125 c 0
+ 564 48 663.21875 24.2392578125 663 24 c 1
+ 564 24 l 1
+ 564 24 501 7.705078125 516 50.3525390625 c 0
+ 531 93 438.280273438 102.7421875 423 135 c 0
+ 396 192 423 246 423 246 c 1
+591 396 m 1
+ 591 276 l 1
+ 177 276 l 1
+ 177 396 l 1
+ 591 396 l 1
+507 609 m 1
+ 612 609 l 1
+ 612 423 l 1
+ 507 423 l 1
+ 507 609 l 1
+171 774 m 1
+ 618 774 l 1
+ 618 630 l 1
+ 171 630 l 1
+ 171 774 l 1
+42 795 m 1
+ 156 795 l 1
+ 156 0 l 1
+ 42 0 l 1
+ 42 795 l 1
+EndSplineSet
+Validated: 524321
+EndChar
+
+StartChar: E
+Encoding: 69 69 3
+Width: 781
+VWidth: 0
+Flags: W
+HStem: 22 78<245 697> 378 87<248 487> 651 123<273 687>
+VStem: 109 129<18 774>
+LayerCount: 2
+Fore
+SplineSet
+245 100 m 1
+ 697 100 l 1
+ 697 22 l 1
+ 245 22 l 1
+ 245 100 l 1
+487 465 m 1
+ 487 378 l 1
+ 248 378 l 1
+ 248 465 l 1
+ 487 465 l 1
+273 772 m 1
+ 706 774 l 1
+ 687 651 l 1
+ 264 651 l 1
+ 273 772 l 1
+109 774 m 1
+ 238 774 l 1
+ 238 18 l 1
+ 109 18 l 1
+ 109 774 l 1
+EndSplineSet
+Validated: 1
+EndChar
+
+StartChar: I
+Encoding: 73 73 4
+Width: 781
+VWidth: 0
+Flags: W
+HStem: 18 21G<109 238> 754 20G<109 238>
+VStem: 109 129<18 774>
+LayerCount: 2
+Fore
+SplineSet
+109 774 m 1
+ 238 774 l 1
+ 238 18 l 1
+ 109 18 l 1
+ 109 774 l 1
+EndSplineSet
+Validated: 1
+EndChar
+
+StartChar: L
+Encoding: 76 76 5
+Width: 781
+VWidth: 0
+Flags: W
+HStem: 22 78<245 697> 754 20G<109 238>
+VStem: 109 129<18 774>
+LayerCount: 2
+Fore
+SplineSet
+245 100 m 1
+ 697 100 l 1
+ 697 22 l 1
+ 245 22 l 1
+ 245 100 l 1
+109 774 m 1
+ 238 774 l 1
+ 238 18 l 1
+ 109 18 l 1
+ 109 774 l 1
+EndSplineSet
+Validated: 1
+EndChar
+
+StartChar: B
+Encoding: 66 66 6
+Width: 758
+VWidth: 0
+Flags: W
+HStem: 22 78<165 467> 24 0 276 120<177 591> 423 186<507 612> 630 144<171 618>
+VStem: 42 114<0 795> 507 105<423 609>
+LayerCount: 2
+Fore
+SplineSet
+165 100 m 1xbe
+ 467 100 l 1
+ 467 22 l 1
+ 165 22 l 1
+ 165 100 l 1xbe
+423 246 m 1
+ 588 261 l 1
+ 588 261 468.645507812 201.22265625 510 141 c 0
+ 527.275390625 115.842773438 612 86.853515625 588 67.4267578125 c 0
+ 564 48 663.21875 24.2392578125 663 24 c 1
+ 564 24 l 1x7e
+ 564 24 501 7.705078125 516 50.3525390625 c 0
+ 531 93 438.280273438 102.7421875 423 135 c 0
+ 396 192 423 246 423 246 c 1
+591 396 m 1
+ 591 276 l 1
+ 177 276 l 1
+ 177 396 l 1
+ 591 396 l 1
+507 609 m 1
+ 612 609 l 1
+ 612 423 l 1
+ 507 423 l 1
+ 507 609 l 1
+171 774 m 1
+ 618 774 l 1
+ 618 630 l 1
+ 171 630 l 1
+ 171 774 l 1
+42 795 m 1
+ 156 795 l 1
+ 156 0 l 1
+ 42 0 l 1
+ 42 795 l 1
+EndSplineSet
+Validated: 524321
+EndChar
+EndChars
+EndSplineFont

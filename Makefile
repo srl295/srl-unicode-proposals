@@ -1,4 +1,4 @@
-PROJS=unicode-image-hash
+PROJS=unicode-image-hash ucd-signatures californian
 COMMON=uproposal
 
 PDFS=$(PROJS:%=%.pdf)
